@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Form</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #ffe6e6, #fff5e6);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 100%;
+      max-width: 450px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: #cc0066;
+      margin-bottom: 25px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      transition: border 0.3s;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #cc0066;
+      outline: none;
+    }
+
+    .error {
+      color: red;
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    .success {
+      color: green;
+      font-size: 16px;
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      padding: 12px;
+      background-color: #cc0066;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #b30059;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Order Form</h2>
+    <form id="orderForm">
+      <label>Name:</label>
+      <input type="text" id="name" />
+      <div class="error" id="nameError"></div>
+
+      <label>Email:</label>
+      <input type="email" id="email" />
+      <div class="error" id="emailError"></div>
+
+      <label>Address:</label>
+      <textarea id="address" rows="3"></textarea>
+      <div class="error" id="addressError"></div>
+
+      <label>Select Item:</label>
+      <select id="item">
+        <option value="">-- Select Item --</option>
+        <option value="ring">Ring</option>
+        <option value="necklace">Necklace</option>
+        <option value="bangle">Bangle</option>
+      </select>
+      <div class="error" id="itemError"></div>
+
+      <label>Enter Jewelry No:</label>
+      <input type="text" id="jewelryNo" />
+      <div class="error" id="jewelryError"></div>
+
+      <button type="submit">Submit</button>
+      <div class="success" id="successMessage"></div>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      // Clear previous errors
+      document.querySelectorAll('.error').forEach(el => el.textContent = '');
+      document.getElementById("successMessage").textContent = "";
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const item = document.getElementById("item").value;
+      const jewelryNo = document.getElementById("jewelryNo").value.trim();
+
+      let valid = true;
+
+      // Name required + only characters
+      if (!name) {
+        document.getElementById("nameError").textContent = "Name is required.";
+        valid = false;
+      } else if (!/^[A-Za-z\s]+$/.test(name)) {
+        document.getElementById("nameError").textContent = "Name must contain only letters.";
+        valid = false;
+      }
+
+      // Email required + valid format
+      if (!email) {
+        document.getElementById("emailError").textContent = "Email is required.";
+        valid = false;
+      } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+        document.getElementById("emailError").textContent = "Enter a valid email.";
+        valid = false;
+      }
+
+      // Address required
+      if (!address) {
+        document.getElementById("addressError").textContent = "Address is required.";
+        valid = false;
+      }
+
+      // Dropdown required
+      if (!item) {
+        document.getElementById("itemError").textContent = "Please select an item.";
+        valid = false;
+      }
+
+      // Jewelry No required + only number
+      if (!jewelryNo) {
+        document.getElementById("jewelryError").textContent = "Jewelry No is required.";
+        valid = false;
+      } else if (!/^\d+$/.test(jewelryNo)) {
+        document.getElementById("jewelryError").textContent = "Jewelry No must be a number.";
+        valid = false;
+      }
+
+      if (valid) {
+        document.getElementById("successMessage").textContent = "✅ Successfully ordered!";
+        document.getElementById("orderForm").reset();
+      }
+    });
+  </script>
+</body>
+</html>
